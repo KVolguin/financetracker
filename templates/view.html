@@ -6,6 +6,33 @@
     <title>View Expenses</title>
 </head>
 <body>
+    {% extends "base.html" %}
+
+    {% block title %}View Expenses{% endblock %}
+
+    {% block content %}
+    <h1>Saved Expenses</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Amount</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for id, amount, description in expenses %}
+            <tr>
+                <td>{{ id }}</td>
+                <td>${{ amount }}</td>
+                <td>{{ description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Total Expenses: ${{ total }}</h2>
+    {% endblock %}
+
     <h1>Saved Expenses</h1>
     <table border="4">
         <thead>
@@ -16,14 +43,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for expense in expenses %}
+            {% for id, amount, description in expenses %}
             <tr>
-                <td>{{ expense[0] }}</td>
-                <td>${{ expense[1] }}</td>
-                <td>{{ expense[2] }}</td>
+                <td>{{ id }}</td>
+                <td>${{ amount }}</td>
+                <td>{{ description }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <h2>Total Expenses: ${{ total | round(2) }}</h2>
 </body>
 </html>

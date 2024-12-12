@@ -19,7 +19,7 @@ def init_db():
 
 @app.route('/', methods=['GET'])
 def home():
-    return 'this is the home!'
+    return render_template('home.html')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -44,12 +44,22 @@ def view():
     # Connect to the database and retrieve all expenses
     conn = sqlite3.connect('expenses.db')
     cursor = conn.cursor()
+
+    # Fetch expense records
     cursor.execute('SELECT id, amount, description FROM expenses')
     expenses = cursor.fetchall()  # List of tuples (id, amount, description)
+
+    # Calculate total expenses
+    cursor.execute('SELECT SUM(amount) FROM expenses')
+    total = cursor.fetchone()[0] # Fetch total amount (return None if no rows yet)
+
     conn.close()
 
+    # Round total to 2 decimal places
+    total = round(total or 0, 2)
+
     # Render the expenses in the view.html template
-    return render_template('view.html', expenses=expenses)
+    return render_template('view.html', expenses=expenses, total=total or 0)
 
 
 if __name__ == "__main__":
