@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 import sqlite3
 
 app = Flask(__name__)
@@ -60,6 +60,36 @@ def view():
 
     # Render the expenses in the view.html template
     return render_template('view.html', expenses=expenses, total=total or 0)
+
+@app.route('/edit/<int:expense_id>', methods=['GET', 'POST'])
+def edit(expense_id):
+    conn = sqlite3.connect('expenses.db')
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        # Update the expense in the database
+        amount = request.form.get('amount')
+        description = request.form.get('description')
+        cursor.execute('UPDATE expenses SET amount = ?, description = ? WHERE id = ?', (amount, description, expense_id))
+        conn.commit()
+        conn.close()
+        return redirect('/view')
+    
+    # Fetch the current expense details
+    cursor.execute('SELECT amount, description FROM expenses WHERE id = ?', (expense_id,))
+    expense = cursor.fetchone()
+    conn.close()
+
+    return render_template('edit.html', expense_id=expense_id, expense=expense)
+
+@app.route('/delete/<int:expense_id>', methods=['POST'])
+def delete(expense_id):
+    conn = sqlite3.connect('expenses.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM expenses WHERE id = ?', (expense_id,))
+    conn.commit()
+    conn.close()
+    return redirect('/view')
 
 
 if __name__ == "__main__":

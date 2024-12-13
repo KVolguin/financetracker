@@ -26,9 +26,18 @@
                 <td>{{ id }}</td>
                 <td>${{ amount }}</td>
                 <td>{{ description }}</td>
+                <td>
+                    <form action="/edit/{{ id }}" method="GET" style="display:inline;">
+                        <button>Edit</button>
+                    </form>
+                    <form action="/delete/{{ id }}" method="POST" style="display:inline;">
+                        <button>Delete</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
     <h2>Total Expenses: ${{ total }}</h2>
     {% endblock %}
