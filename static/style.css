@@ -88,7 +88,7 @@ button:hover {
 }
 
 .chart-container {
-    flex 1;
+    flex: 1;
     width: 45%;
     max-width: 45%; /* Adjust size to fit 2 charts side by side */
     margin: 20px auto;

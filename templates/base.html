@@ -8,11 +8,18 @@
 </head>
 <body>
     <nav>
-        <a href="/">Home</a> |
-        <a href="/add">Add Expense</a> |
-        <a href="/view">View Expenses</a> |
-        <a href="/dashboard">Dashboard</a>
+        <a href="/">Home</a>
+        {% if 'user_id' in session %}
+            <a href="/add">Add Expense</a>
+            <a href="/view">View Expenses</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        {% endif %}
     </nav>
+    
     <hr>
 
     <!-- Flash Messages -->
