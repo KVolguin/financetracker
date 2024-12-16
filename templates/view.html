@@ -12,20 +12,32 @@
 
     {% block content %}
     <h1>Saved Expenses</h1>
+    <form method="get" action="/view">
+        <label for="category">Filter by Category:</label>
+        <input type="text" id="category" name="category">
+        <label for="date">Filter by Date:</label>
+        <input type="date" id="date" name="date">
+        <button type="submit">Filter</button>
+        <a href="/export" class="button">Export as CSV</a>
+    </form>
     <table border="1">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Amount</th>
                 <th>Description</th>
+                <th>Category</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for id, amount, description in expenses %}
+            {% for id, amount, description, category, date in expenses %}
             <tr>
                 <td>{{ id }}</td>
                 <td>${{ amount }}</td>
                 <td>{{ description }}</td>
+                <td>{{ category }}</td>
+                <td>{{ date }}</td>
                 <td>
                     <form action="/edit/{{ id }}" method="GET" style="display:inline;">
                         <button>Edit</button>
@@ -39,28 +51,7 @@
         </tbody>
 
     </table>
-    <h2>Total Expenses: ${{ total }}</h2>
-    {% endblock %}
-
-    <h1>Saved Expenses</h1>
-    <table border="4">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Amount</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for id, amount, description in expenses %}
-            <tr>
-                <td>{{ id }}</td>
-                <td>${{ amount }}</td>
-                <td>{{ description }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     <h2>Total Expenses: ${{ total | round(2) }}</h2>
+    {% endblock %}
 </body>
 </html>

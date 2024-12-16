@@ -10,9 +10,24 @@
     <nav>
         <a href="/">Home</a> |
         <a href="/add">Add Expense</a> |
-        <a href="/view">View Expense History</a>
+        <a href="/view">View Expenses</a> |
+        <a href="/dashboard">Dashboard</a>
     </nav>
     <hr>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     {% block content %}{% endblock %}
+</body>
+
 </body>
 </html>

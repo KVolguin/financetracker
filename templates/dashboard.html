@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Expense Dashboard</h1>
+
+
+<div class="charts-wrapper">
+    <!-- Category Chart -->
+    <div class="chart-container">
+        <h2>Expenses by Category</h2>
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+<!-- Date Chart -->
+    <div class="chart-container">
+        <h2>Expenses Over Time</h2>
+        <canvas id="dateChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for Category Chart
+    const categoryLabels = {{ category_data | map(attribute=0) | list | tojson }};
+    const categoryValues = {{ category_data | map(attribute=1) | list | tojson }};
+
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Expenses by Category',
+                data: categoryValues,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#F44336']
+            }]
+        }
+    });
+
+    // Data for Date Chart
+    const dateLabels = {{ date_data | map(attribute=0) | list | tojson }};
+    const dateValues = {{ date_data | map(attribute=1) | list | tojson }};
+
+    const dateCtx = document.getElementById('dateChart').getContext('2d');
+    new Chart(dateCtx, {
+        type: 'line',
+        data: {
+            labels: dateLabels,
+            datasets: [{
+                label: 'Expenses Over Time',
+                data: dateValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: { title: { display: true, text: 'Date' } },
+                y: { title: { display: true, text: 'Amount' } }
+            }
+        }
+    });
+</script>
+{% endblock %}

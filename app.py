@@ -1,7 +1,10 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash, session, Response
+import csv
+
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'whatever'
 
 # Initialize the database
 def init_db():
@@ -26,40 +29,54 @@ def add():
     if request.method == 'POST':
         amount = request.form.get('amount')
         description = request.form.get('description')
+        category = request.form.get('category')
+        date = request.form.get('date')
 
         # Save the data to the database
         conn = sqlite3.connect('expenses.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO expenses (amount, description) VALUES (?, ?)', (amount, description))
+        cursor.execute('INSERT INTO expenses (amount, description, category, date) VALUES (?, ?, ?, ?)',
+                        (amount, description, category, date))
         conn.commit()
         conn.close()
 
-        return 'Expense added successfully!'
+        flash('Expense added successfully!')
+        return redirect('/view')
+
     
     # Render the form using the add.html template
     return render_template('add.html')
 
 @app.route('/view', methods=['GET'])
 def view():
-    # Connect to the database and retrieve all expenses
+    category = request.args.get('category')
+    date = request.args.get('date')
+
     conn = sqlite3.connect('expenses.db')
     cursor = conn.cursor()
 
-    # Fetch expense records
-    cursor.execute('SELECT id, amount, description FROM expenses')
-    expenses = cursor.fetchall()  # List of tuples (id, amount, description)
+    # Fetch all columns, includign category and date
+    query = 'SELECT id, amount, description, category, date FROM expenses'
+    params = []
+
+    if category:
+        query += ' WHERE category = ?'
+        params.append(category)
+
+    if date:
+        query += ' AND date = ?' if 'WHERE' in query else ' WHERE date = ?'
+        params.append(date)
+
+    cursor.execute(query, params)
+    expenses = cursor.fetchall()
 
     # Calculate total expenses
-    cursor.execute('SELECT SUM(amount) FROM expenses')
-    total = cursor.fetchone()[0] # Fetch total amount (return None if no rows yet)
+    cursor.execute('SELECT SUM(amount) FROM expenses' + (' WHERE category = ?' if category else '') + (' AND date = ?' if date else ''), params)
+    total = cursor.fetchone()[0] or 0
 
     conn.close()
 
-    # Round total to 2 decimal places
-    total = round(total or 0, 2)
-
-    # Render the expenses in the view.html template
-    return render_template('view.html', expenses=expenses, total=total or 0)
+    return render_template('view.html', expenses=expenses, total=round(total, 2))
 
 @app.route('/edit/<int:expense_id>', methods=['GET', 'POST'])
 def edit(expense_id):
@@ -70,13 +87,18 @@ def edit(expense_id):
         # Update the expense in the database
         amount = request.form.get('amount')
         description = request.form.get('description')
-        cursor.execute('UPDATE expenses SET amount = ?, description = ? WHERE id = ?', (amount, description, expense_id))
+        category = request.form.get('category')
+        date = request.form.get('date')
+
+        cursor.execute('UPDATE expenses SET amount = ?, description = ?, category = ?, date = ? WHERE id = ?', 
+                       (amount, description, category, date, expense_id))
         conn.commit()
         conn.close()
+        flash('Expense updated successfully!')
         return redirect('/view')
     
     # Fetch the current expense details
-    cursor.execute('SELECT amount, description FROM expenses WHERE id = ?', (expense_id,))
+    cursor.execute('SELECT amount, description, category, date FROM expenses WHERE id = ?', (expense_id,))
     expense = cursor.fetchone()
     conn.close()
 
@@ -89,8 +111,45 @@ def delete(expense_id):
     cursor.execute('DELETE FROM expenses WHERE id = ?', (expense_id,))
     conn.commit()
     conn.close()
+    flash('Expense deleted successfully!')
     return redirect('/view')
 
+@app.route("/export", methods=['GET'])
+def export():
+    conn = sqlite3.connect('expenses.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, amount, description, category, date FROM expenses')
+    expenses = cursor.fetchall()
+    conn.close()
+
+    # Create CSV response
+    def generate():
+        # Write CSV header
+        yield ','.join(['ID', 'Amount', 'Description', 'Category', 'Date']) + '\n'
+        # Write each expense as a CSV row
+        for expense in expenses:
+            yield ','.join(map(str, expense)) + '\n'
+    
+    return Response(generate(), mimetype='text/csv', headers = {
+        'Content-Disposition': 'attachment; filename=expenses.csv'
+    })
+
+
+@app.route('/dashboard', methods=(['GET']))
+def dashboard():
+    conn = sqlite3.connect('expenses.db')
+    cursor = conn.cursor()
+
+    # Fetch data for visualizations
+    cursor.execute('SELECT category, SUM(amount) FROM expenses GROUP BY category')
+    category_data = cursor.fetchall()
+
+    cursor.execute('SELECT date, SUM(amount) FROM expenses GROUP BY date ORDER BY date')
+    date_data = cursor.fetchall()
+    conn.close()
+
+    # Pass data to template
+    return render_template('dashboard.html', category_data=category_data, date_data=date_data)
 
 if __name__ == "__main__":
     init_db()
