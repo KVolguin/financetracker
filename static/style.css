@@ -23,9 +23,19 @@ nav a:hover {
     text-decoration: underline;
 }
 
-h1 {
-    text-align: center;
-    color: #444;
+.centered-container {
+    display: flex;           /* Use flexbox to center */
+    flex-direction: column;  /* Stack content vertically */
+    justify-content: center; /* Center vertically in the container */
+    align-items: flex-start; /* Align content to the left */
+    margin: 0 auto;          /* Center the container horizontally */
+    max-width: 600px;        /* Control container width */
+    padding: 20px;
+    text-align: left;        /* Ensure text alignment stays left */
+}
+
+h1, p {
+    margin: 10px 0;          /* Add spacing between lines */
 }
 
 table {
@@ -54,6 +64,7 @@ button {
     padding: 10px 20px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -112,4 +123,88 @@ canvas {
 
 .chart-container canvas {
     max-height: 700px;
+}
+
+input {
+    margin-top: 10px;
+}
+
+.centered-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 1920px; /* Apply this only to forms inside centered-container */
+}
+
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and input */
+}
+
+.form-group label {
+    flex: 0 0 100px; /* Fixed width for labels */
+    font-weight: bold;
+}
+
+.form-group input, 
+.form-group datalist, 
+form button {
+    flex: 1; /* Inputs and button take up remaining space */
+    padding: 8px;
+    font-size: 14px;
+}
+
+button {
+    align-self: flex-start; /* Align button to the left side */
+}
+
+.filter-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px
+}
+
+.filter-container input {
+    flex: 0 0 200px;
+}
+
+.filter-container button {
+    flex: 0 0 auto;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    padding: 10px 15px; /* Add padding for a button-like look */
+    display: inline-block;
+}
+
+nav a.active {
+    background-color: #555; /* Slightly lighter gray */
+    color: #ddd; /* Lighten text color for contrast */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.filter-form {
+    display: flex;
+    align-items: center; /* Vertically center-align items */
+    gap: 10px; /* Add some spacing between elements */
+    flex-wrap: wrap; /* Prevent overflow on smaller screens */
+}
+
+.filter-form label {
+    margin-right: 5px; /* Add space between label and input */
+}
+
+.filter-form input {
+    margin-right: 10px; /* Add space between inputs */
+}
+
+.filter-form button, .filter-form a {
+    margin-left: 10px; /* Add spacing for buttons */
 }

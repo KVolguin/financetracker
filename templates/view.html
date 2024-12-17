@@ -12,46 +12,49 @@
 
     {% block content %}
     <h1>Saved Expenses</h1>
-    <form method="get" action="/view">
-        <label for="category">Filter by Category:</label>
-        <input type="text" id="category" name="category">
-        <label for="date">Filter by Date:</label>
-        <input type="date" id="date" name="date">
-        <button type="submit">Filter</button>
-        <a href="/export" class="button">Export as CSV</a>
-    </form>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for id, amount, description, category, date in expenses %}
-            <tr>
-                <td>{{ id }}</td>
-                <td>${{ amount }}</td>
-                <td>{{ description }}</td>
-                <td>{{ category }}</td>
-                <td>{{ date }}</td>
-                <td>
-                    <form action="/edit/{{ id }}" method="GET" style="display:inline;">
-                        <button>Edit</button>
-                    </form>
-                    <form action="/delete/{{ id }}" method="POST" style="display:inline;">
-                        <button>Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
 
+    <div class="filter-container">
+        <form action="{{ url_for('view') }}" method="GET" class="filter-form">
+            <label for="category">Filter by Category:</label>
+            <input type="text" id="category" name="category">
+    
+            <label for="date">Filter by Date:</label>
+            <input type="date" id="date" name="date">
+    
+            <button type="submit">Filter</button>
+            <a href="{{ url_for('export') }}" class="button">Export as CSV</a>
+        </form>
+    </div>
+    
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense[0] }}</td>
+            <td>${{ expense[1] }}</td>
+            <td>{{ expense[2] }}</td>
+            <td>{{ expense[3] }}</td>
+            <td>{{ expense[4] }}</td>
+            <td>
+                <a href="{{ url_for('edit', expense_id=expense[0]) }}"><button>Edit</button></a>
+                <form method="POST" action="{{ url_for('delete', expense_id=expense[0]) }}" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
     </table>
-    <h2>Total Expenses: ${{ total | round(2) }}</h2>
+
+    <h2>Total Expenses: ${{ total }}</h2>
     {% endblock %}
+
 </body>
 </html>
