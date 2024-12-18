@@ -208,3 +208,51 @@ nav a.active {
 .filter-form button, .filter-form a {
     margin-left: 10px; /* Add spacing for buttons */
 }
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    min-height: 80vh; /* Full viewport height */
+    text-align: center; /* Center the h1 text */
+}
+
+.auth-container h1 {
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between form fields */
+    width: 300px; /* Fixed width for the form */
+}
+
+.auth-container label {
+    text-align: left; /* Align labels to the left */
+    font-weight: bold;
+}
+
+.auth-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.auth-container button {
+    background-color: #6d8d58;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.auth-container button:hover {
+    background-color: #2e6631;
+}
