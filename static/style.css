@@ -24,18 +24,18 @@ nav a:hover {
 }
 
 .centered-container {
-    display: flex;           /* Use flexbox to center */
-    flex-direction: column;  /* Stack content vertically */
-    justify-content: center; /* Center vertically in the container */
-    align-items: flex-start; /* Align content to the left */
-    margin: 0 auto;          /* Center the container horizontally */
-    max-width: 600px;        /* Control container width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto; 
+    max-width: 600px;
     padding: 20px;
-    text-align: left;        /* Ensure text alignment stays left */
+    text-align: left; 
 }
 
 h1, p {
-    margin: 10px 0;          /* Add spacing between lines */
+    margin: 10px 0; 
 }
 
 table {
@@ -101,7 +101,7 @@ button:hover {
 .chart-container {
     flex: 1;
     width: 45%;
-    max-width: 45%; /* Adjust size to fit 2 charts side by side */
+    max-width: 45%; 
     margin: 20px auto;
     display: inline-block;
     text-align: center;
@@ -117,9 +117,8 @@ button:hover {
 }
 
 canvas {
-    width: 100% !important; /* Ensures canvas respects container size */
-    height: auto !important; /* Keeps aspect ratio */
-}
+    width: 100% !important;
+    height: auto !important;
 
 .chart-container canvas {
     max-height: 700px;
@@ -133,31 +132,31 @@ input {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 1920px; /* Apply this only to forms inside centered-container */
+    max-width: 1920px; 
 }
 
 
 .form-group {
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between label and input */
+    gap: 10px; 
 }
 
 .form-group label {
-    flex: 0 0 100px; /* Fixed width for labels */
+    flex: 0 0 100px; 
     font-weight: bold;
 }
 
 .form-group input, 
 .form-group datalist, 
 form button {
-    flex: 1; /* Inputs and button take up remaining space */
+    flex: 1; 
     padding: 8px;
     font-size: 14px;
 }
 
 button {
-    align-self: flex-start; /* Align button to the left side */
+    align-self: flex-start; 
 }
 
 .filter-container{
@@ -180,57 +179,57 @@ nav a {
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;
-    padding: 10px 15px; /* Add padding for a button-like look */
+    padding: 10px 15px; 
     display: inline-block;
 }
 
 nav a.active {
-    background-color: #555; /* Slightly lighter gray */
-    color: #ddd; /* Lighten text color for contrast */
-    border-radius: 5px; /* Optional: Add rounded corners */
+    background-color: #555; 
+    color: #ddd; 
+    border-radius: 5px;
 }
 
 .filter-form {
     display: flex;
-    align-items: center; /* Vertically center-align items */
-    gap: 10px; /* Add some spacing between elements */
-    flex-wrap: wrap; /* Prevent overflow on smaller screens */
+    align-items: center; 
+    gap: 10px; 
+    flex-wrap: wrap; 
 }
 
 .filter-form label {
-    margin-right: 5px; /* Add space between label and input */
+    margin-right: 5px; 
 }
 
 .filter-form input {
-    margin-right: 10px; /* Add space between inputs */
+    margin-right: 10px; 
 }
 
 .filter-form button, .filter-form a {
-    margin-left: 10px; /* Add spacing for buttons */
+    margin-left: 10px; 
 }
 
 .auth-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    min-height: 80vh; /* Full viewport height */
-    text-align: center; /* Center the h1 text */
+    justify-content: center;
+    align-items: center; 
+    min-height: 80vh; 
+    text-align: center; 
 }
 
 .auth-container h1 {
-    margin-bottom: 20px; /* Space below the heading */
+    margin-bottom: 20px;
 }
 
 .auth-container form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between form fields */
-    width: 300px; /* Fixed width for the form */
+    gap: 15px;
+    width: 300px;
 }
 
 .auth-container label {
-    text-align: left; /* Align labels to the left */
+    text-align: left;
     font-weight: bold;
 }
 

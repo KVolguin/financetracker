@@ -47,7 +47,7 @@ def add():
     conn = sqlite3.connect('expenses.db')
     cursor = conn.cursor()
 
-    categories = []  # Initialize empty categories list
+    categories = [] 
 
     try:
         # Fetch unique categories for the user
@@ -55,45 +55,37 @@ def add():
         categories = [row[0] for row in cursor.fetchall()]
 
         if request.method == 'POST':
-            # Fetch form data
             amount = request.form.get('amount')
             description = request.form.get('description')
             category = request.form.get('category')
             date = request.form.get('date')
 
-            # Start a transaction
             cursor.execute('BEGIN')
 
-            # Ensure user counter exists
             cursor.execute('INSERT OR IGNORE INTO user_counters (user_id, last_expense_id) VALUES (?, ?)', (user_id, 0))
 
-            # Fetch and increment last_expense_id for the user
             cursor.execute('SELECT last_expense_id FROM user_counters WHERE user_id = ?', (user_id,))
             result = cursor.fetchone()
             new_expense_id = (result[0] if result else 0) + 1
 
-            # Insert the new expense into the expenses table
             cursor.execute('''
                 INSERT INTO expenses (id, user_id, amount, description, category, date)
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (new_expense_id, user_id, amount, description, category, date))
 
-            # Update the last_expense_id in user_counters
             cursor.execute('UPDATE user_counters SET last_expense_id = ? WHERE user_id = ?', (new_expense_id, user_id))
 
-            # Commit the transaction
             conn.commit()
             flash('Expense added successfully!')
             return redirect('/view')
 
     except sqlite3.Error as e:
-        conn.rollback()  # Rollback changes if any error occurs
+        conn.rollback()
         flash(f'An error occurred: {str(e)}')
 
     finally:
-        conn.close()  # Ensure the database connection is closed
+        conn.close()
 
-    # Pass categories to the template
     return render_template('add.html', categories=categories)
 
 
