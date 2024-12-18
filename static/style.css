@@ -119,7 +119,7 @@ button:hover {
 canvas {
     width: 100% !important;
     height: auto !important;
-
+}
 .chart-container canvas {
     max-height: 700px;
 }

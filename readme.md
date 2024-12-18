@@ -1,9 +1,10 @@
-# **Expense Tracker Web Application**
-
+# **Expense Tracker Web App**
+#### Video Demo:  https://youtu.be/MOmq5x5MRu8
+#### Description:
 I created an expense tracker using **Flask**, **Django/Jinja**, and **SQLite**. I created my own development environemnt in Windows using WSL, and used git for version control and github as a backup. I used werkzeug for password/username hashing and security. I used chart.js for making charts. It's a very simple app, it just allows a user to make an account, add their expenses with a description, category, and date, and do some basic things with the data. Users can filter the data thats been entered, export it as a CSV, and view a couple of helpful graphs that show a pie chart and a line graph of their expenses over time. I wanted to create this app to further practice understanding and using Flask and HTML/CSS, as well as handling all the files needed for it. I also wanted to do a project that was relatively simple so that I could focus more on using my own IDE and git/github without the complications that come with overreaching my capabilities and, frankly, time I have left to build this project due to feature creep. Feature creep was a major issue in my last project and it took 3 times longer than I first anticipated. By keeping the scope relatively shallow I was able to complete something within a much more reasonable amount of time.
 
 Below are listed out all the features in more detail.
-
+#### github link https://github.com/KVolguin/financetracker
 ---
 
 ## **Features**
